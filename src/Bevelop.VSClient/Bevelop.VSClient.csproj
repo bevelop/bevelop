@@ -54,6 +54,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\ChangeServer.cs" />
+    <Compile Include="Services\FileLocallyChangedEventArgs.cs" />
+    <Compile Include="Services\FileRemotelyChangedEventArgs.cs" />
+    <Compile Include="Services\GitFileChangeDetector.cs" />
+    <Compile Include="Services\GitService.cs" />
+    <Compile Include="Services\IChangeServer.cs" />
+    <Compile Include="Services\IGitFileChangeDetector.cs" />
+    <Compile Include="Services\IGitService.cs" />
+    <Compile Include="Services\IZipper.cs" />
+    <Compile Include="Services\Zipper.cs" />
     <Compile Include="UIExtensions\ChangeNotifier.cs" />
     <Compile Include="UIExtensions\ChangeNotifierTextViewCreationListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

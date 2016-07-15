@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.Composition;
+using Bevelop.VSClient.Services;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -7,10 +8,6 @@ using Microsoft.VisualStudio.Utilities;
 
 namespace Bevelop.VSClient.UIExtensions
 {
-    /// <summary>
-    /// Establishes an <see cref="IAdornmentLayer"/> to place the adornment on and exports the <see cref="IWpfTextViewCreationListener"/>
-    /// that instantiates the adornment on the event of a <see cref="IWpfTextView"/>'s creation
-    /// </summary>
     [Export(typeof(IWpfTextViewCreationListener))]
     [ContentType("text")]
     [TextViewRole(PredefinedTextViewRoles.Document)]
@@ -22,13 +19,20 @@ namespace Bevelop.VSClient.UIExtensions
         AdornmentLayerDefinition _editorAdornmentLayer;
 
         readonly ITextDocumentFactoryService _textDocumentFactoryService;
-        IVsCommandWindow _commandWindow;
+        readonly IVsCommandWindow _commandWindow;
+        readonly IZipper _zipper;
+        readonly IGitService _gitService;
+        readonly IChangeServer _changeServer;
 
         [ImportingConstructor]
         public ChangeNotifierTextViewCreationListener(ITextDocumentFactoryService textDocumentFactoryService)
         {
             _textDocumentFactoryService = textDocumentFactoryService;
             _commandWindow = (IVsCommandWindow)ServiceProvider.GlobalProvider.GetService(typeof(SVsCommandWindow));
+
+            _zipper = new Zipper();
+            _gitService = new GitService(_zipper);
+            _changeServer = new ChangeServer();
         }
 
         public AdornmentLayerDefinition EditorAdornmentLayer
@@ -50,7 +54,7 @@ namespace Bevelop.VSClient.UIExtensions
             if (_textDocumentFactoryService.TryGetTextDocument(textView.TextBuffer, out document))
             {
                 // The adorment will get wired to the text view events
-                new ChangeNotifier(textView, document, _commandWindow);
+                new ChangeNotifier(textView, document, _commandWindow, _gitService, _changeServer, _zipper);
             }
         }
     }
