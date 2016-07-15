@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bevelop.Messages", "Messages\Bevelop.Messages.csproj", "{CC064786-E907-4161-BF54-ACBD555821E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bevelop.Messages", "Bevelop.Messages\Bevelop.Messages.csproj", "{CC064786-E907-4161-BF54-ACBD555821E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bevelop.Server", "Server\Bevelop.Server.csproj", "{1B0DA73E-76A9-4B0B-B92A-A85CFB2DD3FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bevelop.Server", "Bevelop.Server\Bevelop.Server.csproj", "{1B0DA73E-76A9-4B0B-B92A-A85CFB2DD3FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bevelop.VSClient", "VSClient\Bevelop.VSClient.csproj", "{38F92521-AD3C-4673-BFB9-5A103B0F338C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bevelop.VSClient", "Bevelop.VSClient\Bevelop.VSClient.csproj", "{38F92521-AD3C-4673-BFB9-5A103B0F338C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
