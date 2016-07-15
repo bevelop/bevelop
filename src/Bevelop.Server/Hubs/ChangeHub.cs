@@ -1,7 +1,7 @@
 ﻿using Bevelop.Messages;
 using Microsoft.AspNet.SignalR;
 
-namespace Bevelop.Server
+namespace Bevelop.Server.Hubs
 {
     public class ChangeHub : Hub
     {

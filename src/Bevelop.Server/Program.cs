@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Owin.Hosting;
 
 namespace Bevelop.Server
@@ -7,7 +8,8 @@ namespace Bevelop.Server
     {
         static void Main(string[] args)
         {
-            const string url = "http://localhost:8080";
+            var url = args.Any() ? args[0] : "http://localhost:8080";
+
             using (WebApp.Start(url))
             {
                 Console.WriteLine("Server running on {0}", url);
