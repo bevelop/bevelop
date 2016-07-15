@@ -11,7 +11,7 @@ This feature gives you notifications when someone starts changing a file in a gi
 
 * Execute the server component:
 
-```
+```csharp
 Bevelop.Server.exe http://localhost:1111  // If not specified the URL is http://localhost:8080
 ```
 
