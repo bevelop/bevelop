@@ -8,15 +8,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Bevelop.Messages;
 using LibGit2Sharp;
-using Messages;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
-namespace VSClient
+namespace Bevelop.VSClient.UIExtensions
 {
     sealed class ChangeNotifier
     {

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="VSClient.Poya Manouchehri.696b7bf1-5df8-4dce-acad-a59aaa99c7f6" Version="1.0" Language="en-US" Publisher="Poya Manouchehri" />
-    <DisplayName>VSClient</DisplayName>
-    <Description>Empty VSIX Project.</Description>
+    <Identity Id="Bevelop.Poya Manouchehri.696b7bf1-5df8-4dce-acad-a59aaa99c7f6" Version="1.0" Language="en-US" Publisher="Poya Manouchehri" />
+    <DisplayName>Bevelop</DisplayName>
+    <Description xml:space="preserve">Productivity tools for Visual Studio</Description>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />
