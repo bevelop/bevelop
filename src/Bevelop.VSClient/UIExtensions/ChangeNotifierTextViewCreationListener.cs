@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using Bevelop.VSClient.Services;
+using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -32,7 +33,7 @@ namespace Bevelop.VSClient.UIExtensions
 
             _zipper = new Zipper();
             _gitService = new GitService(_zipper);
-            _changeServer = new ChangeServer();
+            _changeServer = new ChangeServer(() => BevelopPackage.Instance.GeneralOptions.ServerUrl);
         }
 
         public AdornmentLayerDefinition EditorAdornmentLayer

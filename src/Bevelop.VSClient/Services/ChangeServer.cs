@@ -6,8 +6,14 @@ namespace Bevelop.VSClient.Services
 {
     public class ChangeServer : IChangeServer
     {
+        readonly Func<string> _getServerUrl;
         HubConnection _connection;
         IHubProxy _hub;
+
+        public ChangeServer(Func<string> getServerUrl)
+        {
+            _getServerUrl = getServerUrl;
+        }
 
         public event EventHandler<FileRemotelyChangedEventArgs> FileRemotelyChanged = delegate { };
 
@@ -20,7 +26,7 @@ namespace Bevelop.VSClient.Services
         {
             if (_hub == null)
             {
-                _connection = new HubConnection("http://localhost:8080/");
+                _connection = new HubConnection(_getServerUrl());
                 _hub = _connection.CreateHubProxy("ChangeHub");
                 _connection.Start().Wait();
 

@@ -54,6 +54,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Options\GeneralOptions.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Services\ChangeServer.cs" />
     <Compile Include="Services\FileLocallyChangedEventArgs.cs" />
     <Compile Include="Services\FileRemotelyChangedEventArgs.cs" />
@@ -86,7 +89,7 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <Content Include="index.html" />
-    <Content Include="Resources\TestPackage.ico" />
+    <Content Include="Resources\BevelopPackage.ico" />
     <Content Include="stylesheet.css" />
   </ItemGroup>
   <ItemGroup>
