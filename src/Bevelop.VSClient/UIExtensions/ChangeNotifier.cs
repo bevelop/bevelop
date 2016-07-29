@@ -50,6 +50,7 @@ namespace Bevelop.VSClient.UIExtensions
             _fileChangeDetector.FileReset += OnFileReset;
 
             _changeServer.FileRemotelyChanged += OnFileRemotelyChanged;
+            _changeServer.RequestChanges(_fileChangeDetector.FileAddress);
 
             _view.ViewportHeightChanged += OnSizeChanged;
             _view.ViewportWidthChanged += OnSizeChanged;
@@ -66,7 +67,7 @@ namespace Bevelop.VSClient.UIExtensions
             RunOnUiThread(() =>
             {
                 _otherPeoplesChanges = _otherPeoplesChanges.Where(c =>
-                    c.FilePath.Equals(_fileChangeDetector.RelativePath, StringComparison.OrdinalIgnoreCase))
+                    c.Address.FilePath.Equals(_fileChangeDetector.FileAddress.FilePath, StringComparison.OrdinalIgnoreCase))
                     .ToList();
 
                 RefreshUi();
@@ -75,14 +76,14 @@ namespace Bevelop.VSClient.UIExtensions
 
         void OnFileRemotelyChanged(object sender, FileRemotelyChangedEventArgs e)
         {
-            if (!_fileChangeDetector.RelativePath.Equals(e.FileChange.FilePath, StringComparison.OrdinalIgnoreCase))
+            if (!_fileChangeDetector.FileAddress.FilePath.Equals(e.FileChange.Address.FilePath, StringComparison.OrdinalIgnoreCase))
                 return;
 
             RunOnUiThread(() =>
             {
                 _otherPeoplesChanges = _otherPeoplesChanges.Where(c =>
                     !(c.User.Equals(e.FileChange.User) &&
-                      c.FilePath.Equals(e.FileChange.FilePath, StringComparison.OrdinalIgnoreCase)))
+                      c.Address.FilePath.Equals(e.FileChange.Address.FilePath, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
 
                 _otherPeoplesChanges.Add(e.FileChange);
@@ -139,7 +140,7 @@ namespace Bevelop.VSClient.UIExtensions
                     var leftFile = Path.Combine(Path.GetTempPath(), $"Yours - {Guid.NewGuid().ToString().Substring(0, 10).ToLower()}");
                     File.WriteAllText(leftFile, leftContent);
 
-                    var rightContent = _zipper.Unzip(change.Diff);
+                    var rightContent = _zipper.Unzip(change.DiffZip);
                     var rightFile = Path.Combine(Path.GetTempPath(), $"Theirs - {Guid.NewGuid().ToString().Substring(0, 10).ToLower()}");
                     File.WriteAllText(rightFile, rightContent);
 

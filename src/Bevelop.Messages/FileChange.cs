@@ -1,11 +1,13 @@
-﻿namespace Bevelop.Messages
+﻿using System;
+
+namespace Bevelop.Messages
 {
     public class FileChange
     {
+        public FileAddress Address { get; set; }
         public string Branch { get; set; }
-        public string FilePath { get; set; }
-        public string FileName { get; set; }
         public string User { get; set; }
-        public byte[] Diff { get; set; }
+        public byte[] DiffZip { get; set; }
+        public DateTime Date { get; set; }
     }
 }

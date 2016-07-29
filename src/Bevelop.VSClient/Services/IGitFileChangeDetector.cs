@@ -1,4 +1,5 @@
 ﻿using System;
+using Bevelop.Messages;
 
 namespace Bevelop.VSClient.Services
 {
@@ -7,7 +8,7 @@ namespace Bevelop.VSClient.Services
         event EventHandler<FileLocallyChangedEventArgs> FileLocallyChanged;
         event EventHandler<EventArgs> FileReset;
 
+        FileAddress FileAddress { get; }
         string FullPath { get; }
-        string RelativePath { get; }
     }
 }

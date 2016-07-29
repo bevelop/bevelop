@@ -15,7 +15,7 @@ namespace Bevelop.VSClient.Services
         public event EventHandler<FileLocallyChangedEventArgs> FileLocallyChanged = delegate { };
         public event EventHandler<EventArgs> FileReset = delegate { };
 
-        public string RelativePath { get; }
+        public FileAddress FileAddress { get; private set; }
         public string FullPath { get; }
 
         public GitFileChangeDetector(Repository repository, string fullPath, IZipper zipper)
@@ -23,7 +23,11 @@ namespace Bevelop.VSClient.Services
             _repository = repository;
             FullPath = fullPath;
             _zipper = zipper;
-            RelativePath = GetRepoRelativePath();
+            FileAddress = new FileAddress
+            {
+                Repository = repository.Network.Remotes.First().Url,
+                FilePath = GetRepoRelativePath()
+            };
 
             SetupFileWatch();
         }
@@ -65,7 +69,7 @@ namespace Bevelop.VSClient.Services
                 _fileSystemWatcher.EnableRaisingEvents = false;
 
                 var modified = _repository.RetrieveStatus().Modified
-                    .FirstOrDefault(m => m.FilePath.Equals(RelativePath, StringComparison.OrdinalIgnoreCase));
+                    .FirstOrDefault(m => m.FilePath.Equals(FileAddress.FilePath, StringComparison.OrdinalIgnoreCase));
 
                 if (modified != null)
                 {
@@ -75,9 +79,12 @@ namespace Bevelop.VSClient.Services
                     {
                         User = _repository.Config.Get<string>("user.name").Value,
                         Branch = _repository.Head.FriendlyName,
-                        FileName = Path.GetFileName(modified.FilePath),
-                        FilePath = modified.FilePath,
-                        Diff = zippedText
+                        DiffZip = zippedText,
+                        Address = new FileAddress
+                        {
+                            Repository = _repository.Network.Remotes.First().Url,
+                            FilePath = FileAddress.FilePath
+                        }
                     };
 
                     FileLocallyChanged(this, new FileLocallyChangedEventArgs(fileChange));

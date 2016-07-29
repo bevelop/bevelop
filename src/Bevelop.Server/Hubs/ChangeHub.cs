@@ -1,13 +1,36 @@
 ﻿using Bevelop.Messages;
+using Bevelop.Server.Services;
 using Microsoft.AspNet.SignalR;
 
 namespace Bevelop.Server.Hubs
 {
     public class ChangeHub : Hub
     {
-        public void NotifyChange(FileChange message)
+        static readonly IFileChangeStore FileChangeStore;
+        static readonly IClock Clock;
+
+        static ChangeHub()
         {
-            Clients.Others.notify(message);
+            Clock = new Clock();
+            FileChangeStore = new FileChangeStore(Clock);
+        }
+
+        public void NotifyChange(FileChange fileChange)
+        {
+            fileChange.Date = Clock.UtcNow;
+            FileChangeStore.Save(fileChange);
+
+            Clients.Others.notify(fileChange);
+        }
+
+        public void RequestChanges(FileAddress fileAddress)
+        {
+            var changes = FileChangeStore.GetByAddress(fileAddress);
+
+            foreach (var change in changes)
+            {
+                Clients.Caller.notify(change);
+            }
         }
     }
 }
