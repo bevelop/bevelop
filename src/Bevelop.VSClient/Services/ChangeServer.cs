@@ -22,9 +22,9 @@ namespace Bevelop.VSClient.Services
             GetHub().Invoke("NotifyChange", fileChange);
         }
 
-        public void RequestChanges(FileAddress fileAddress)
+        public void RequestChanges(string username, FileAddress fileAddress)
         {
-            GetHub().Invoke("RequestChanges", fileAddress);
+            GetHub().Invoke("RequestChanges", username, fileAddress);
         }
 
         IHubProxy GetHub()

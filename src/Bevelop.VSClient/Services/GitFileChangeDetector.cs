@@ -17,6 +17,8 @@ namespace Bevelop.VSClient.Services
 
         public FileAddress FileAddress { get; }
         public string FullPath { get; }
+        public string Username => _repository.Config.Get<string>("user.name").Value;
+        public bool HasChanges { get; private set; }
 
         public GitFileChangeDetector(Repository repository, string fullPath, IZipper zipper)
         {
@@ -80,16 +82,19 @@ namespace Bevelop.VSClient.Services
 
                     var fileChange = new FileChange
                     {
-                        User = _repository.Config.Get<string>("user.name").Value,
+                        User = Username,
                         Branch = _repository.Head.FriendlyName,
                         DiffZip = zippedText,
                         Address = FileAddress
                     };
 
-                    FileLocallyChanged(this, new FileLocallyChangedEventArgs(fileChange));
+                    var previouslyUnchanged = !HasChanges;
+                    HasChanges = true;
+                    FileLocallyChanged(this, new FileLocallyChangedEventArgs(fileChange, previouslyUnchanged));
                 }
                 else
                 {
+                    HasChanges = false;
                     FileReset(this, new EventArgs());
                 }
             }

@@ -10,5 +10,7 @@ namespace Bevelop.VSClient.Services
 
         FileAddress FileAddress { get; }
         string FullPath { get; }
+        string Username { get; }
+        bool HasChanges { get; }
     }
 }

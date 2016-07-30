@@ -7,6 +7,6 @@ namespace Bevelop.VSClient.Services
     {
         event EventHandler<FileRemotelyChangedEventArgs> FileRemotelyChanged;
         void NotifyFileChange(FileChange fileChange);
-        void RequestChanges(FileAddress fileAddress);
+        void RequestChanges(string username, FileAddress fileAddress);
     }
 }

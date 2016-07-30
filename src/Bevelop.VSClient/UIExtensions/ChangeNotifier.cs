@@ -39,18 +39,16 @@ namespace Bevelop.VSClient.UIExtensions
 
             _adornmentLayer = view.GetAdornmentLayer("ChangeNotifier");
 
-            if (!gitService.IsInRepo(_document.FilePath))
-            {
-                IsTracking = false;
+            IsTracking = gitService.IsInRepo(_document.FilePath);
+            if (!IsTracking)
                 return;
-            }
 
             _fileChangeDetector = gitService.GetFileChangeDetector(_document.FilePath);
             _fileChangeDetector.FileLocallyChanged += OnFileLocallyChanged;
             _fileChangeDetector.FileReset += OnFileReset;
 
             _changeServer.FileRemotelyChanged += OnFileRemotelyChanged;
-            _changeServer.RequestChanges(_fileChangeDetector.FileAddress);
+            _changeServer.RequestChanges(_fileChangeDetector.Username, _fileChangeDetector.FileAddress);
 
             _view.ViewportHeightChanged += OnSizeChanged;
             _view.ViewportWidthChanged += OnSizeChanged;
@@ -60,15 +58,16 @@ namespace Bevelop.VSClient.UIExtensions
         void OnFileLocallyChanged(object sender, FileLocallyChangedEventArgs e)
         {
             _changeServer.NotifyFileChange(e.FileChange);
+
+            if (e.WasPreviouslyUnchanged)
+                _changeServer.RequestChanges(_fileChangeDetector.Username, _fileChangeDetector.FileAddress);
         }
 
         void OnFileReset(object sender, EventArgs e)
         {
             RunOnUiThread(() =>
             {
-                _otherPeoplesChanges = _otherPeoplesChanges.Where(c =>
-                    c.Address.FilePath.Equals(_fileChangeDetector.FileAddress.FilePath, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+                _otherPeoplesChanges.Clear();
 
                 RefreshUi();
             });
@@ -77,6 +76,9 @@ namespace Bevelop.VSClient.UIExtensions
         void OnFileRemotelyChanged(object sender, FileRemotelyChangedEventArgs e)
         {
             if (!_fileChangeDetector.FileAddress.FilePath.Equals(e.FileChange.Address.FilePath, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            if (!_fileChangeDetector.HasChanges)
                 return;
 
             RunOnUiThread(() =>
