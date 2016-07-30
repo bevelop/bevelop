@@ -15,7 +15,7 @@ namespace Bevelop.VSClient.Services
         public event EventHandler<FileLocallyChangedEventArgs> FileLocallyChanged = delegate { };
         public event EventHandler<EventArgs> FileReset = delegate { };
 
-        public FileAddress FileAddress { get; private set; }
+        public FileAddress FileAddress { get; }
         public string FullPath { get; }
 
         public GitFileChangeDetector(Repository repository, string fullPath, IZipper zipper)
@@ -23,9 +23,12 @@ namespace Bevelop.VSClient.Services
             _repository = repository;
             FullPath = fullPath;
             _zipper = zipper;
+            var repoUri = new Uri(repository.Network.Remotes.First().Url);
+            var repo = repoUri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.UserInfo, UriFormat.UriEscaped);
+
             FileAddress = new FileAddress
             {
-                Repository = repository.Network.Remotes.First().Url,
+                Repository = repo,
                 FilePath = GetRepoRelativePath()
             };
 
@@ -80,11 +83,7 @@ namespace Bevelop.VSClient.Services
                         User = _repository.Config.Get<string>("user.name").Value,
                         Branch = _repository.Head.FriendlyName,
                         DiffZip = zippedText,
-                        Address = new FileAddress
-                        {
-                            Repository = _repository.Network.Remotes.First().Url,
-                            FilePath = FileAddress.FilePath
-                        }
+                        Address = FileAddress
                     };
 
                     FileLocallyChanged(this, new FileLocallyChangedEventArgs(fileChange));

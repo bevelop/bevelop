@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
-using Bevelop.Messages;
 using LibGit2Sharp;
 
 namespace Bevelop.VSClient.Services
@@ -23,16 +21,6 @@ namespace Bevelop.VSClient.Services
         {
             var repository = new Repository(GetRepoRoot(path));
             return new GitFileChangeDetector(repository, path, _zipper);
-        }
-
-        public FileAddress GetFileAddress(string path)
-        {
-            var repository = new Repository(GetRepoRoot(path));
-            return new FileAddress
-            {
-                Repository = repository.Network.Remotes.First().Url,
-                FilePath = repository.Info.Path
-            };
         }
 
         string GetRepoRoot(string path)
